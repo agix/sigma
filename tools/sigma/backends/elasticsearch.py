@@ -547,7 +547,7 @@ class XPackWatcherBackend(ElasticsearchQuerystringBackend, MultiRuleOutputMixin)
                                   "title": title,
                                   "description": description,
                                   "tags": tags
-                              },     
+                              },
                               "trigger": {
                                 "schedule": {
                                   "interval": interval  # how often the watcher should check
@@ -594,10 +594,11 @@ class XPackWatcherBackend(ElasticsearchQuerystringBackend, MultiRuleOutputMixin)
 class ElastalertBackend(MultiRuleOutputMixin):
     """Elastalert backend"""
     active = True
-    supported_alert_methods = {'email', 'http_post'}
+    supported_alert_methods = {'email', 'http_post', 'debug'}
 
     options = ElasticsearchQuerystringBackend.options + (
-        ("alert_methods", "", "Alert method(s) to use when the rule triggers, comma separated. Supported: " + ', '.join(supported_alert_methods), None),
+        ("alert_methods", 'debug', "Alert method(s) to use when the rule triggers, comma separated. Supported: " + ', '.join(supported_alert_methods), None),
+        ("import_config", "", "Add import line to use your own config", None),
 
         # Options for HTTP POST alerting
         ("http_post_url", None, "Webhook URL used for HTTP POST alert notification", None),
@@ -613,6 +614,7 @@ class ElastalertBackend(MultiRuleOutputMixin):
         ("realert_time", "0m", "Ignore repeating alerts for a period of time", None),
         ("expo_realert_time", "60m", "This option causes the value of realert to exponentially increase while alerts continue to fire", None)
     )
+
     interval = None
     title = None
 
@@ -716,10 +718,14 @@ class ElastalertBackend(MultiRuleOutputMixin):
                             'tags': rule_tag
                         }
                     }
+            if 'debug' in alert_methods:
+                rule_object['alert'].append('debug')
             #If alert is not define put debug as default
             if len(rule_object['alert']) == 0:
-                rule_object['alert'].append('debug')
+                del rule_object['alert']
 
+            if self.import_config:
+                rule_object['import'] = self.import_config
             #Increment rule number
             rule_number += 1
             self.elastalert_alerts[rule_object['name']] = rule_object
