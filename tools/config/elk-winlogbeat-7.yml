@@ -15,12 +15,12 @@ logsources:
     product: windows
     service: application
     conditions:
-      log_name: Application
+      winlog.channel: Application
   windows-security:
     product: windows
     service: security
     conditions:
-      log_name: Security
+      winlog.channel: Security
   windows-sysmon:
     product: windows
     service: sysmon
@@ -109,3 +109,5 @@ fieldmappings:
     TicketOptions: winlog.event_data.TicketOptions
     User: winlog.event_data.User
     WorkstationName: winlog.event_data.WorkstationName
+    RelativeTargetName: winlog.event_data.RelativeTargetName
+    Accesses: winlog.event_data.Accesses

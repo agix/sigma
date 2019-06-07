@@ -647,9 +647,11 @@ class ElastalertBackend(MultiRuleOutputMixin):
                 "description": description,
                 "index": index,
                 "priority": self.convertLevel(level),
-                "realert": self.generateTimeframe(self.realert_time),
                 #"exponential_realert": self.generateTimeframe(self.expo_realert_time)
             }
+
+            if self.realert_time:
+                rule_object["realert"] = self.generateTimeframe(self.realert_time)
 
             rule_object['filter'] = self.generateQuery(parsed)
             self.queries = []
