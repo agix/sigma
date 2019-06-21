@@ -97,7 +97,7 @@ fieldmappings:
     ServiceName: winlog.event_data.ServiceName
     ShareName: winlog.event_data.ShareName
     Signature: winlog.event_data.Signature
-    Source: winlog.event_data.Source
+    Source: winlog.provider_name
     SourceImage: winlog.event_data.SourceImage
     StartModule: winlog.event_data.StartModule
     Status: winlog.event_data.Status
