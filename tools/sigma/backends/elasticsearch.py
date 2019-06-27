@@ -175,7 +175,8 @@ class ElasticsearchDSLBackend(RulenameCommentMixin, ElasticsearchWildcardHandlin
         """
         Remove Sigma quoting from value. Currently, this appears only in one case: \\\\*
         """
-        return value.replace("\\\\*", "\\*")
+        return value.replace("\\\\*", "\\*").translate(str.maketrans({'\\': '\\\\', '*': '\\*'}))
+        # return value.replace("\\\\*", "\\*")
 
     def generateMapItemNode(self, node):
         key, value = node

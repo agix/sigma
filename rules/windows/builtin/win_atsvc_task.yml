@@ -14,10 +14,10 @@ logsource:
 detection:
     selection:
         EventID: 5145
-        ShareName: \\*\IPC$
+        ShareName: \\\*\IPC$
         RelativeTargetName: atsvc
-        Accesses: '*WriteData*'
+        AccessList: '*%%4417*'
     condition: selection
-falsepositives: 
+falsepositives:
     - pentesting
 level: medium
